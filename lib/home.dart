@@ -7,7 +7,7 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:Shrine/addEmployee.dart';
+
 import 'package:Shrine/database_models/attendance_offline.dart';
 import 'package:Shrine/database_models/visits_offline.dart';
 import 'package:Shrine/globals.dart' as globals;
@@ -41,6 +41,7 @@ import 'database_models/qr_offline.dart';
 import 'drawer.dart';
 import 'globals.dart';
 import 'leave_summary.dart';
+import 'location_tracking/home_view.dart';
 import "offline_home.dart";
 import 'payment.dart';
 import 'punchlocation.dart';
@@ -1795,6 +1796,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                 key: _keyBlue,
                                 backgroundColor: buttoncolor,
                                 onPressed: () {
+                                  startLiveLocationTracking();
+                                  /*
                                   print('hellowassup' +
                                       (((!companyFreshlyRegistered &&
                                                       attendanceNotMarkedButEmpAdded) ||
@@ -1825,6 +1828,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                   // tooltiptwo.close();
                                   istooltiponeshown = true;
                                   print(istooltiponeshown);
+
+                                   */
                                 },
                                 tooltip: 'Add Employee',
                                 child: new Icon(Icons.person_add),
@@ -1839,6 +1844,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           //key: _keyBlue,
                           backgroundColor: buttoncolor,
                           onPressed: () {
+                            /*
                             print('hello');
                             print(glow);
                             _getPositions();
@@ -1852,7 +1858,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => AddEmployee()),
-                              );
+                              );*/
+
+                            startLiveLocationTracking();
                           },
                           tooltip: 'Add Employee',
                           child: new Icon(Icons.person_add),
@@ -2666,7 +2674,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         color: globals.buttoncolor,
         onPressed: () async {
 
-
+          startLiveLocationTracking();
           globals.globalCameraOpenedStatus = true;
           // //print("Time out button pressed");
 
@@ -3516,6 +3524,16 @@ var FakeLocationStatus=0;
         });
       });
     }*/
+  }
+
+  void startLiveLocationTracking() {
+
+    HomeViewState tracker=HomeViewState();
+    tracker.initState();
+    tracker.onClickEnable(true);
+    tracker.onClickChangePace();
+    //tracker.onEnabledChange(true);
+
   }
 //////////////////////////////////////////////////////////////////
 }

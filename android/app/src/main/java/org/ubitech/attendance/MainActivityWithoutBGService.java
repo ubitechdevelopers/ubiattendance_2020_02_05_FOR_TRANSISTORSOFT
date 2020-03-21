@@ -2,21 +2,14 @@ package org.ubitech.attendance;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ActivityManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
 import android.os.Looper;
-import android.os.StrictMode;
 import android.provider.Settings;
 
 import androidx.annotation.NonNull;
@@ -46,7 +39,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
 import io.flutter.Log;
@@ -301,27 +293,27 @@ public class MainActivityWithoutBGService extends FlutterActivity {
               @Override
               public void onMethodCall(MethodCall call, Result result) {
                 if (call.method.equals("logCompleteRegistrationEvent")) {
-                 // if(facebookLogger!=null);
-                 // facebookLogger.logCompleteRegistrationEvent("");
+             //    if(facebookLogger!=null);
+             //     facebookLogger.logCompleteRegistrationEvent("");
                 }
                 else
                 if (call.method.equals("logContactEvent")) {
-                 // if(facebookLogger!=null);
-                 // facebookLogger.logContactEvent();
+             //     if(facebookLogger!=null);
+             //     facebookLogger.logContactEvent();
                 }
                 else
                 if (call.method.equals("logPurchaseEvent")) {
-                 // if(facebookLogger!=null);
-                // facebookLogger.logPurchaseEvent();
+            //      if(facebookLogger!=null);
+            //     facebookLogger.logPurchaseEvent();
                 }
                 if (call.method.equals("logRateEvent")) {
                   // Log.i("Assistant","Assistant Start Called");
-                 // if(facebookLogger!=null);
-                 // facebookLogger.logRateEvent("","","0",5,4);
+            //     if(facebookLogger!=null);
+             //    facebookLogger.logRateEvent("","","0",5,4);
                 }
                 if (call.method.equals("logStartTrialEvent")) {
-                 // if(facebookLogger!=null);
-                // facebookLogger.logStartTrialEvent("","",0.0);
+               //  if(facebookLogger!=null);
+               //  facebookLogger.logStartTrialEvent("","",0.0);
 
                 }
 

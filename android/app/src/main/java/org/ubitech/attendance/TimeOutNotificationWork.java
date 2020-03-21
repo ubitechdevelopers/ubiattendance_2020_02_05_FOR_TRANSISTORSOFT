@@ -31,7 +31,7 @@ public class TimeOutNotificationWork extends Worker {
     @Override
     public Result doWork() {
         displayNotification("Please Mark Your Time out", "Your shift Time is up.");
-        return Result.SUCCESS;
+        return null;
     }
 
     /*

@@ -1,3 +1,5 @@
+
+
 package org.ubitech.attendance;
 
 import android.app.NotificationChannel;
@@ -34,7 +36,7 @@ public class TimeInNotificationWork extends Worker {
     @Override
     public Result doWork() {
         displayNotification("Please Mark Your Time In", "Your shift Time has started.");
-        return Result.SUCCESS;
+        return null;
     }
 
     /*

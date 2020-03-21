@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:Shrine/globals.dart' as prefix0;
+import 'package:Shrine/locationTracker.dart';
 import 'package:Shrine/services/services.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'contactUs.dart';
 import 'flexi_time.dart';
 import 'globals.dart';
 import 'home.dart';
+import 'location_tracking/app_lt.dart';
 import 'login.dart';
 import 'notifications.dart';
 import 'payment.dart';
@@ -433,7 +435,21 @@ class _AppDrawerState extends State<AppDrawer> {
               );
             },
           ),
-
+          new ListTile(
+            title: Row(
+              children: <Widget>[
+                Icon(Icons.settings,size: 20.0),SizedBox(width: 5.0),
+                new Text("Live Tracking", style: new TextStyle(fontSize: 15.0)),
+              ],
+            ),
+            onTap: () {
+              // Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AdvancedApp()),
+              );
+            },
+          ),
           /*  new ListTile(
             title: Row(
               children: <Widget>[
@@ -513,6 +529,20 @@ class _AppDrawerState extends State<AppDrawer> {
             ),
             onTap: () {
               logout();
+            },
+          ),
+          new ListTile(
+            title: Row(
+              children: <Widget>[
+                Icon(Icons.exit_to_app,size: 20.0),SizedBox(width: 5.0),
+                new Text("Location Tracker", style: new TextStyle(fontSize: 15.0)),
+              ],
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LocationTracker()),
+              );
             },
           ),
 
