@@ -14,6 +14,7 @@
 // limitations under the License.
 
 import 'dart:convert';
+import 'package:firebase_database/firebase_database.dart' as firebaseDb;
 
 import 'package:Shrine/app.dart';
 import 'package:Shrine/globals.dart' as prefix0;
@@ -33,7 +34,6 @@ import 'package:background_fetch/background_fetch.dart';
 import 'dart:convert';
 JsonEncoder encoder = new JsonEncoder.withIndent("     ");
 
-/// Receive events from BackgroundGeolocation in Headless state.
 void backgroundGeolocationHeadlessTask(bg.HeadlessEvent headlessEvent) async {
   print('📬 --> $headlessEvent');
 
@@ -58,36 +58,47 @@ void backgroundGeolocationHeadlessTask(bg.HeadlessEvent headlessEvent) async {
       break;
     case bg.Event.LOCATION:
       bg.Location location = headlessEvent.event;
+      print(location);
       break;
     case bg.Event.MOTIONCHANGE:
       bg.Location location = headlessEvent.event;
+      print(location);
       break;
     case bg.Event.GEOFENCE:
       bg.GeofenceEvent geofenceEvent = headlessEvent.event;
+      print(geofenceEvent);
       break;
     case bg.Event.GEOFENCESCHANGE:
       bg.GeofencesChangeEvent event = headlessEvent.event;
+      print(event);
       break;
     case bg.Event.SCHEDULE:
       bg.State state = headlessEvent.event;
+      print(state);
       break;
     case bg.Event.ACTIVITYCHANGE:
       bg.ActivityChangeEvent event = headlessEvent.event;
+      print(event);
       break;
     case bg.Event.HTTP:
       bg.HttpEvent response = headlessEvent.event;
+      print(response);
       break;
     case bg.Event.POWERSAVECHANGE:
       bool enabled = headlessEvent.event;
+      print(enabled);
       break;
     case bg.Event.CONNECTIVITYCHANGE:
       bg.ConnectivityChangeEvent event = headlessEvent.event;
+      print(event);
       break;
     case bg.Event.ENABLEDCHANGE:
       bool enabled = headlessEvent.event;
+      print(enabled);
       break;
     case bg.Event.AUTHORIZATION:
       bg.AuthorizationEvent event = headlessEvent.event;
+      print(event);
       bg.BackgroundGeolocation.setConfig(bg.Config(
           url: "${ENV.TRACKER_HOST}/api/locations"
       ));
@@ -99,7 +110,7 @@ void backgroundGeolocationHeadlessTask(bg.HeadlessEvent headlessEvent) async {
 void backgroundFetchHeadlessTask(String taskId) async {
   // Get current-position from BackgroundGeolocation in headless mode.
   //bg.Location location = await bg.BackgroundGeolocation.getCurrentPosition(samples: 1);
-  print('[BackgroundFetch] HeadlessTask');
+  print("[BackgroundFetch] HeadlessTask: $taskId");
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
   int count = 0;
@@ -184,7 +195,7 @@ class _MyAppState extends State<MyApp> {
     // 2.  Configure the plugin
     bg.BackgroundGeolocation.ready(bg.Config(
         reset: true,
-        debug: false,
+        debug: true,
         logLevel: bg.Config.LOG_LEVEL_VERBOSE,
         desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
         distanceFilter: 10.0,
@@ -271,15 +282,53 @@ class _MyAppState extends State<MyApp> {
   // Event handlers
   //
 
-  void _onLocation(bg.Location location) {
+  void _onLocation(bg.Location location) async{
     print('[location] - $location');
+    firebaseDb.FirebaseDatabase database;
+
+    var currDate=DateTime.now();
+    SharedPreferences prefs = await _prefs;
+    String orgname = "ubi222";
+    String username = "ubiShashank";
+    prefs.setString("username", username);
+    prefs.setString("orgname", orgname);
+    String employeeId=prefs.getString("empid");
+    database = new firebaseDb.FirebaseDatabase();
+    database.setPersistenceEnabled(true);
+
+    //database.setPersistenceCacheSizeBytes(10000);
+    firebaseDb.DatabaseReference _locRef=database.reference().child('Locations2');
+    _locRef.child('Ubitech').child(employeeId).child(currDate.toString().split(".")[0].split(" ")[0]).child(currDate.toString().split(" ")[1].split(".")[0]).set(<String,String>{
+      "is_moving":location.isMoving.toString(),
+      "uuid":location.uuid.toString(),
+      "odometer":location.odometer.toString(),
+      "activity":location.activity.type.toString(),
+      "is_charging":location.battery.isCharging.toString(),
+      "battery_level":location.battery.level.toString(),
+      "altitude":location.coords.altitude.toString(),
+      "heading":location.coords.heading.toString(),
+      "latitude":location.coords.latitude.toString(),
+      "speed":location.coords.speed.toString(),
+      "longitude":location.coords.longitude.toString(),
+      "accuracy":location.coords.accuracy.toString(),
+
+
+    }).then((_) {
+      print('Transaction  committed.');
+    });
+
+
+    print('[${bg.Event.LOCATION}] - $location');
+
+
+
 
     String odometerKM = (location.odometer / 1000.0).toStringAsFixed(1);
-    if(mounted)
-    setState(() {
+   // if(mounted)
+   // setState(() {
       _content = encoder.convert(location.toMap());
       _odometer = odometerKM;
-    });
+  //  });
   }
 
   void _onLocationError(bg.LocationError error) {

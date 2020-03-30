@@ -108,7 +108,7 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin<HomeVi
         transistorAuthorizationToken: token,
         // Logging & Debug
         reset: false,
-        debug: false,
+        debug: true,
         logLevel: bg.Config.LOG_LEVEL_VERBOSE,
         // Geolocation options
         desiredAccuracy: bg.Config.DESIRED_ACCURACY_NAVIGATION,
@@ -181,11 +181,11 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin<HomeVi
     if (enabled) {
       dynamic callback = (bg.State state) {
         print('[start] success: $state');
-        if(mounted)
-        setState(() {
+        //if(mounted)
+        //setState(() {
           _enabled = state.enabled;
           _isMoving = state.isMoving;
-        });
+        //});
       };
       bg.State state = await bg.BackgroundGeolocation.state;
       if (state.trackingMode == 1) {
@@ -196,11 +196,11 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin<HomeVi
     } else {
       dynamic callback = (bg.State state) {
         print('[stop] success: $state');
-        if(mounted)
-        setState(() {
+       // if(mounted)
+       // setState(() {
           _enabled = state.enabled;
           _isMoving = state.isMoving;
-        });
+       // });
       };
       bg.BackgroundGeolocation.stop().then(callback);
     }
@@ -208,10 +208,10 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin<HomeVi
 
   // Manually toggle the tracking state:  moving vs stationary
   void onClickChangePace() {
-    if(mounted)
-    setState(() {
+    //if(mounted)
+    //setState(() {
       _isMoving = !_isMoving;
-    });
+   // });
     print("[onClickChangePace] -> $_isMoving");
 
     bg.BackgroundGeolocation.changePace(_isMoving).then((bool isMoving) {
@@ -281,11 +281,11 @@ class HomeViewState extends State<HomeView> with TickerProviderStateMixin<HomeVi
 
 
     print('[${bg.Event.LOCATION}] - $location');
-    if(mounted)
-      setState(() {
+   // if(mounted)
+   //   setState(() {
         events.insert(0, Event(bg.Event.LOCATION, location, location.toString(compact: true)));
         _odometer = (location.odometer / 1000.0).toStringAsFixed(1);
-      });
+   //   });
   }
 
   void _onLocationError(bg.LocationError error) {
