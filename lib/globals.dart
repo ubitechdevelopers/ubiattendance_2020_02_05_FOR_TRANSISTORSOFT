@@ -89,7 +89,7 @@ bool addEmpToolTipShown=false;
 String PictureBase64Att = "";
 String globalOrgTopic='';
 String globalCountryTopic='';
-
+String locationTrackingAddon="1";
 
 
 

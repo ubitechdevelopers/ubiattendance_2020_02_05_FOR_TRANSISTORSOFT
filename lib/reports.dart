@@ -1,3 +1,4 @@
+import 'package:Shrine/location_tracking_visits.dart';
 import 'package:Shrine/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,7 +22,7 @@ import 'thismonth.dart';
 import 'timeoff_list.dart';
 import 'today_attendance_report.dart';
 import 'visits_list.dart';
-
+import 'globals.dart' as globals;
 class Reports extends StatefulWidget {
   @override
   _Reports createState() => _Reports();
@@ -525,7 +526,7 @@ class _Reports extends State<Reports> {
               },
             ):Center(),
       (visitpunch==1 && (admin_sts=='1' ||   admin_sts =='2'))?SizedBox(height: 0.0):Center(),
-            (visitpunch==1 && (admin_sts=='1' ||   admin_sts =='2'))?
+            (visitpunch==1 && (admin_sts=='1' ||   admin_sts =='2'))&&(globals.locationTrackingAddon!='1')?
             new RaisedButton(
               child: Container(
                 padding: EdgeInsets.only(top: 15.0,bottom: 15.0),
@@ -570,7 +571,51 @@ class _Reports extends State<Reports> {
                 }
               },
             ):Center(),
-
+            (visitpunch==1 && (admin_sts=='1' ||   admin_sts =='2'))&&(globals.locationTrackingAddon=='1')?
+            new RaisedButton(
+              child: Container(
+                padding: EdgeInsets.only(top: 15.0,bottom: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Icon(const IconData(0xe80d, fontFamily: "CustomIcon"),size: 30.0,),
+                    SizedBox(width: 20.0,),
+                    Expanded(
+//                            widthFactor: MediaQuery.of(context).size.width*0.10,
+                      child:Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                              child: Text('Punched Visits',style: TextStyle(fontWeight:FontWeight.bold,fontSize: 18.0,letterSpacing: 1),)
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5.0),
+                            child: Container(
+                                child: Text('List of punched visits ',style: TextStyle(fontSize: 12.0,letterSpacing: 1),)
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(Icons.keyboard_arrow_right,size: 30.0,),
+                  ],
+                ),
+              ),
+              color: Colors.white,
+              elevation: 0.0,
+              splashColor: splashcolor,
+              textColor: textcolor,
+              onPressed: () {
+                if(trialstatus=="2"){
+                  showDialogWidget("Upgrade to Premium plan to check Visited Locations records.");
+                }else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LocationTrackingVisits()),
+                  );
+                }
+              },
+            ):Center(),
             (timeOff==1 && admin_sts=='1')?SizedBox(height: 0.0):Center(),
             (timeOff==1 && admin_sts=='1')? new RaisedButton(
               child: Container(
